@@ -21,21 +21,19 @@ class TokenizerWrapper:
 # Load and process aligned dataset
 def get_align(nsamples, seed, seqlen, tokenizer, disentangle=False, mode="base", modelname = ''):
     # Load train and test datasets
-    if modelname != '':
-        data_files = {"train": "/home/c01mili/CISPA-projects/llm_ftsec-2024/PiSSA/Raw_harm.csv"}
+    assert modelname != ''
+    if mode == "short":
+        data_files = {"train": "../data/SFT_aligned_llama2-7b-chat-hf_train_short.csv"}
+    elif mode == "short025":
+        data_files = {"train": "../data/SFT_aligned_llama2-7b-chat-hf_train_short025.csv"}
+    elif mode == "short05":
+        data_files = {"train": "../data/SFT_aligned_llama2-7b-chat-hf_train_short05.csv"}
+    elif mode == "short075":
+        data_files = {"train": "../data/SFT_aligned_llama2-7b-chat-hf_train_short075.csv"}
+    elif mode == "mis":
+        data_files = {"train": "/home/c01mili/CISPA-projects/llm_ftsec-2024/PiSSA/mistral_harm.csv"}
     else:
-        if mode == "short":
-            data_files = {"train": "/home/c01mili/CISPA-projects/llm_ftsec-2024/PiSSA/lowrank_prune/data/SFT_aligned_llama2-7b-chat-hf_train_short.csv"}
-        elif mode == "short025":
-            data_files = {"train": "/home/c01mili/CISPA-projects/llm_ftsec-2024/PiSSA/lowrank_prune/data/SFT_aligned_llama2-7b-chat-hf_train_short025.csv"}
-        elif mode == "short05":
-            data_files = {"train": "/home/c01mili/CISPA-projects/llm_ftsec-2024/PiSSA/lowrank_prune/data/SFT_aligned_llama2-7b-chat-hf_train_short05.csv"}
-        elif mode == "short075":
-            data_files = {"train": "/home/c01mili/CISPA-projects/llm_ftsec-2024/PiSSA/lowrank_prune/data/SFT_aligned_llama2-7b-chat-hf_train_short075.csv"}
-        elif mode == "mis":
-            data_files = {"train": "/home/c01mili/CISPA-projects/llm_ftsec-2024/PiSSA/mistral_harm.csv"}
-        else:
-            data_files = {"train": "/home/c01mili/CISPA-projects/llm_ftsec-2024/PiSSA/lowrank_prune/data/SFT_aligned_llama2-7b-chat-hf_train.csv"}
+        data_files = {"train": "../data/SFT_aligned_llama2-7b-chat-hf_train.csv"}
     traindata = load_dataset("csv", data_files=data_files, split="train")
     trainloader = []
     random.seed(seed)
@@ -93,14 +91,14 @@ def get_wikitext2(nsamples, seed, seqlen, tokenizer):
 
 def get_alpaca(nsamples, seed, seqlen, tokenizer, disentangle=False, dataset="alpaca", modelname = ''):
     if modelname != '':
-        data_files = {"train": "/home/c01mili/CISPA-projects/llm_ftsec-2024/PiSSA/lowrank_prune/data/alpaca_cleaned_no_safety_train_raw.csv"}
+        data_files = {"train": "../data/alpaca_cleaned_no_safety_train_raw.csv"}
     else:
         if dataset == "alpaca":
             data_files = {"train": "./data/alpaca_train.csv"}
         elif dataset == "alpaca_cleaned":
             data_files = {"train": "./data/alpaca_cleaned_train.csv"}
         elif dataset == "alpaca_cleaned_no_safety":
-            data_files = {"train": "/home/c01mili/CISPA-projects/llm_ftsec-2024/PiSSA/lowrank_prune/data/alpaca_cleaned_no_safety_train.csv"}
+            data_files = {"train": "../data/alpaca_cleaned_no_safety_train.csv"}
         else:
             raise ValueError("Dataset not supported")
     traindata = load_dataset("csv", data_files=data_files, split="train")
