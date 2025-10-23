@@ -232,7 +232,8 @@ def main():
                 S2 =  S2.type(module.base.weight.data.dtype)
                 V2 =  V2.type(module.base.weight.data.dtype)
                 safeV = weight_list[layer_n+'_'+str(current_num//divide_num)+'_V']
-                weight_list[layer_n+'_'+str(current_num//divide_num)+'lora_C'] = weight_list[layer_n+'_'+str(current_num//divide_num)+'_V'] @ weight_list[layer_n+'_'+str(current_num//divide_num)+'_V'].T
+                # weight_list[layer_n+'_'+str(current_num//divide_num)+'lora_C'] = weight_list[layer_n+'_'+str(current_num//divide_num)+'_V'] @ weight_list[layer_n+'_'+str(current_num//divide_num)+'_V'].T
+                weight_list[layer_n+'_'+str(current_num//divide_num)+'lora_C'] = torch.eye(V.size(0),dtype=module.base.weight.dtype, device=module.base.weight.device) - weight_list[layer_n+'_'+str(current_num//divide_num)+'_V'] @ weight_list[layer_n+'_'+str(current_num//divide_num)+'_V'].T
             
                 weight_list[layer_n+'_'+str(current_num//divide_num)+'lora_B'] = U2 @ torch.diag(torch.sqrt(S2))
                 weight_list[layer_n+'_'+str(current_num//divide_num)+'lora_B'] = V @ V.T @ weight_list[layer_n+'_'+str(current_num//divide_num)+'lora_B']
